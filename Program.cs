@@ -31,6 +31,19 @@ namespace szd
             Console.WriteLine("End time: " + endTime.Date.ToString("yyyy/MM/dd"));
             Console.WriteLine();
 
+            var users = results.Select(x => x.User).Distinct();
+            foreach (var user in users)
+            {
+                var result = results
+                    .Where(x => x.User == user)
+                    .Any(x => x.Message.Contains("4/4"));
+                if (result == false)
+                {
+                    Console.WriteLine(user + " 님은 이번 주 4회 이상 인증을 하셨나요?");
+                }
+            }
+
+            Console.WriteLine("------- log ---------");
             foreach (var result in results)
             {
                 Console.Write(result.Date + "    ");
