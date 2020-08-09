@@ -12,5 +12,3 @@ $ dotnet run
 ## Installation Prerequisites
 
 * Install the latest .NET Core 3.1
-
-

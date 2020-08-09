@@ -25,12 +25,13 @@ namespace szd
                 .Where(x => x.Date >= startTime && x.Date <= endTime)
                 .Where(x => Regex.IsMatch(x.Message, @"[0-9]+\/4"))
                 .OrderBy(x => x.User)
-                .OrderBy(x => x.Date)
                 .ToList();
 
             foreach (var result in results)
             {
-                Console.WriteLine(result.User + "                   " + result.Message + "            " + result.Date);
+                Console.Write(result.User);
+                Console.Write(result.Message.PadLeft(40));
+                Console.WriteLine();
             }
         }
     }
