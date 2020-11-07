@@ -18,8 +18,10 @@ namespace szd
 
             var conversationHistory = csv.GetRecords<ConversationHistory>().ToList();
 
-            // Start from last week.
+
+            // This week.
             var startTime = DateTime.UtcNow.AddHours(9).StartOfWeek(DayOfWeek.Sunday);
+            // Last week.
             // var startTime = DateTime.UtcNow.AddHours(9).AddDays(-7).StartOfWeek(DayOfWeek.Sunday);
             var endTime = startTime.AddDays(7).AddSeconds(-1);
 
@@ -58,7 +60,7 @@ namespace szd
             {
                 if (userCounter.Value == topCountUser.Value)
                 {
-                    System.Console.WriteLine($"이번 주에는 {userCounter.Key}님이 가장 열심히 하고 계시네요!");
+                    System.Console.WriteLine($"이번 주에는 {userCounter.Key}님이 가장 열심히 하셨네요!");
                 }
             }
             System.Console.WriteLine();

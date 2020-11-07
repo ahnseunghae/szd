@@ -365,4 +365,5 @@ bin/
 obj/
 
 *.csv
+*.txt
 .DS_Store
