@@ -44,17 +44,19 @@ namespace szd
             // Finds exception users.
             var exceptionUsers = parser.GetExceptionUsers(conversationHistories);
             // Finds workout done users.
-            var workoutUsers = parser.GetWorkoutUsers(conversationHistories);
+            var workouts = parser.GetWorkouts(conversationHistories);
+            var workoutUsers = workouts.Select(x => x.User).Distinct();
 
-            foreach (var existingUser in existingUsers)
+            var participantCount = exceptionUsers.ToList().Concat(workoutUsers).Distinct().Count();
+            System.Console.WriteLine($"{participantCount}명이 인증 참여, 예외 신청을 하였습니다.");
+            System.Console.WriteLine($"{workoutUsers.Count()}명이 인증에 참여해주셨습니다.");
+            System.Console.WriteLine($"{exceptionUsers.Count()}명이 예외 신청을 하였습니다.");
+            Console.WriteLine();
+            foreach (var exceptionUser in exceptionUsers)
             {
-                if (workoutUsers.Any(x => x == existingUser) == false &&
-                    exceptionUsers.Any(x => x == existingUser) == false)
-                {
-                    System.Console.WriteLine(existingUser + " 님은 인증에 참여하셨나요?");
-                }
+                Console.WriteLine($"{exceptionUser} 님은 이번 주 예외를 신청하였습니다.");
             }
-            System.Console.WriteLine();
+            Console.WriteLine();
 
             // 인증 안한 유저 찾기
             foreach (var workoutUser in workoutUsers)
@@ -69,6 +71,25 @@ namespace szd
                 {
                     Console.WriteLine(workoutUser + " 님은 주 4회 이상 인증을 하셨나요?");
                 }
+            }
+            Console.WriteLine();
+
+            foreach (var existingUser in existingUsers)
+            {
+                if (workoutUsers.Any(x => x == existingUser) == false &&
+                    exceptionUsers.Any(x => x == existingUser) == false)
+                {
+                    System.Console.WriteLine(existingUser + " 님은 인증에 참여하셨나요?");
+                }
+            }
+
+            Console.WriteLine();
+            foreach (var workout in workouts)
+            {
+                Console.Write(workout.Date + "    ");
+                Console.Write(workout.User);
+                Console.Write(workout.Message.PadLeft(35));
+                Console.WriteLine();
             }
             Console.WriteLine();
         }

@@ -27,18 +27,10 @@ namespace szd
             // Remove duplicated users.
             users = users.Distinct().ToList();
 
-            System.Console.WriteLine($"{users.Count()}명이 예외 신청을 하였습니다.");
-            Console.WriteLine();
-            foreach (var user in users)
-            {
-                Console.WriteLine(user);
-            }
-            Console.WriteLine();
-
             return users;
         }
 
-        public IEnumerable<string> GetWorkoutUsers(IEnumerable<ConversationHistory> conversationHistories)
+        public IEnumerable<ConversationHistory> GetWorkouts(IEnumerable<ConversationHistory> conversationHistories)
         {
             // ex.) 1/4
             var regex = new Regex(@"[0-9]+\/4");
@@ -46,22 +38,8 @@ namespace szd
             var results = conversationHistories
                 .Where(x => regex.IsMatch(x.Message))
                 .ToList();
-            var users = results.Select(x => x.User)
-                .Distinct();
 
-            System.Console.WriteLine($"{users.Count()}명이 인증에 참여해주셨습니다.");
-            Console.WriteLine();
-
-            foreach (var result in results)
-            {
-                Console.Write(result.Date + "    ");
-                Console.Write(result.User);
-                Console.Write(result.Message.PadLeft(35));
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-
-            return users;
+            return results;
         }
 
         public IEnumerable<string> GetUsers(IEnumerable<ConversationHistory> conversationHistories)
