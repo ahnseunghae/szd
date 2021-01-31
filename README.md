@@ -6,7 +6,7 @@
 2. Change filename as `data.csv` and move to SZD root folder.
 3. Run this console program.
 ```bash
-$ dotnet run
+$ dotnet run --project src/szd.csproj > result.txt
 ```
 
 ## Installation Prerequisites

@@ -8,35 +8,36 @@ namespace szd
 {
     public class Parser
     {
-        public IEnumerable<string> GetExceptionUsers(IEnumerable<ConversationHistory> conversationHistories)
+        public IEnumerable<string> GetExceptionUsers(
+            IEnumerable<string> users,
+            IEnumerable<ConversationHistory> conversationHistories)
         {
-            var users = new List<string>();
+            var exceptionUsers = new List<string>();
 
-            // ex.) @칠구/28/여/대구 예외
-            var regex = new Regex("^@.* 예외$");
-
-            foreach (var conversationHistory in conversationHistories)
+            foreach (var user in users)
             {
-                if (regex.IsMatch(conversationHistory.Message))
+                foreach (var conversationHistory in conversationHistories)
                 {
-                    var user = conversationHistory.Message.Replace("@", "").Split(" ")[0];
-
-                    users.Add(user);
+                    if (conversationHistory.Message.Contains(user) &&
+                        conversationHistory.Message.Contains("예외"))
+                    {
+                        exceptionUsers.Add(user);
+                        continue;
+                    }
                 }
             }
-            // Remove duplicated users.
-            users = users.Distinct().ToList();
 
-            return users;
+            return exceptionUsers;
         }
 
-        public IEnumerable<ConversationHistory> GetWorkouts(IEnumerable<ConversationHistory> conversationHistories)
+        public IEnumerable<ConversationHistory> GetWorkouts(
+            string user,
+            IEnumerable<ConversationHistory> conversationHistories)
         {
-            // ex.) 1/4
             var regex = new Regex(@"[0-9]+\/4");
 
             var results = conversationHistories
-                .Where(x => regex.IsMatch(x.Message))
+                .Where(x => regex.IsMatch(x.Message) && x.Message.Contains(user))
                 .ToList();
 
             return results;

@@ -40,56 +40,69 @@ namespace szd
             var parser = new Parser();
 
             // All SZD members.
-            var existingUsers = parser.GetUsers(conversationHistories);
+            var users = parser.GetUsers(conversationHistories);
             // Finds exception users.
-            var exceptionUsers = parser.GetExceptionUsers(conversationHistories);
+            var exceptionUsers = parser.GetExceptionUsers(users, conversationHistories);
+
+            var workoutUsers = new List<string>();
             // Finds workout done users.
-            var workouts = parser.GetWorkouts(conversationHistories);
-            var workoutUsers = workouts.Select(x => x.User).Distinct();
+            foreach (var user in users)
+            {
+                var workouts = parser.GetWorkouts(user, conversationHistories);
+                if (workouts.Any())
+                {
+                    workoutUsers.Add(user);
+                }
+            }
 
             var participantCount = exceptionUsers.ToList().Concat(workoutUsers).Distinct().Count();
             System.Console.WriteLine($"{participantCount}명이 인증 참여, 예외 신청을 하였습니다.");
             System.Console.WriteLine($"{workoutUsers.Count()}명이 인증에 참여해주셨습니다.");
             System.Console.WriteLine($"{exceptionUsers.Count()}명이 예외 신청을 하였습니다.");
             Console.WriteLine();
+
             foreach (var exceptionUser in exceptionUsers)
             {
                 Console.WriteLine($"{exceptionUser} 님은 이번 주 예외를 신청하였습니다.");
             }
             Console.WriteLine();
 
+            foreach (var user in users)
+            {
+                if (workoutUsers.Any(x => x == user) == false &&
+                    exceptionUsers.Any(x => x == user) == false)
+                {
+                    System.Console.WriteLine(user + " 님은 인증에 참여하셨나요?");
+                }
+            }
+            Console.WriteLine();
+
             // 인증 안한 유저 찾기
-            foreach (var workoutUser in workoutUsers)
+            var regex = new Regex(@"[4-9]+\/4");
+            foreach (var user in users)
             {
                 var result = conversationHistories
-                    .Where(x => x.User == workoutUser)
-                    .Any(x => x.Message.Contains("4/4"));
+                    .Where(x => x.User == user)
+                    .Any(x => regex.IsMatch(x.Message));
 
-                if (result == false &&
-                    exceptionUsers.Any(x => x == workoutUser) == false
-                    )
+                if (result == false && exceptionUsers.Any(x => x == user) == false)
                 {
-                    Console.WriteLine(workoutUser + " 님은 주 4회 이상 인증을 하셨나요?");
+                    Console.WriteLine(user + " 님은 주 4회 이상 인증을 하셨나요?");
                 }
             }
             Console.WriteLine();
 
-            foreach (var existingUser in existingUsers)
+            foreach (var user in users)
             {
-                if (workoutUsers.Any(x => x == existingUser) == false &&
-                    exceptionUsers.Any(x => x == existingUser) == false)
-                {
-                    System.Console.WriteLine(existingUser + " 님은 인증에 참여하셨나요?");
-                }
-            }
+                var workouts = parser.GetWorkouts(user, conversationHistories);
 
-            Console.WriteLine();
-            foreach (var workout in workouts)
-            {
-                Console.Write(workout.Date + "    ");
-                Console.Write(workout.User);
-                Console.Write(workout.Message.PadLeft(35));
-                Console.WriteLine();
+                foreach (var workout in workouts)
+                {
+                    Console.Write(workout.Date + "    ");
+                    Console.Write(workout.User);
+                    Console.Write(workout.Message.PadLeft(35));
+                    Console.WriteLine();
+                }
             }
             Console.WriteLine();
         }
