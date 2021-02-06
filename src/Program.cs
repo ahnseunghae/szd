@@ -81,11 +81,10 @@ namespace szd
             var regex = new Regex(@"[4-9]+\/4");
             foreach (var user in users)
             {
-                var result = conversationHistories
-                    .Where(x => x.User == user)
-                    .Any(x => regex.IsMatch(x.Message));
-
-                if (result == false && exceptionUsers.Any(x => x == user) == false)
+                var workouts = parser.GetWorkouts(user, conversationHistories);
+                if (workouts.Count() < 4 &&
+                   (workouts.Any(x => regex.IsMatch(x.Message)) == false) &&
+                   exceptionUsers.Any(x => x == user) == false)
                 {
                     Console.WriteLine(user + " 님은 주 4회 이상 인증을 하셨나요?");
                 }
