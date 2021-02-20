@@ -21,12 +21,33 @@ namespace szd
                         conversationHistory.Message.Contains("예외"))
                     {
                         exceptionUsers.Add(user);
-                        continue;
+                        break;
                     }
                 }
             }
 
             return exceptionUsers;
+        }
+
+        public IEnumerable<ConversationHistory> GetExceptions(
+            IEnumerable<string> users,
+            IEnumerable<ConversationHistory> conversationHistories)
+        {
+            var exceptions = new List<ConversationHistory>();
+
+            foreach (var conversationHistory in conversationHistories)
+            {
+                foreach (var user in users)
+                {
+                    if (conversationHistory.Message.Contains(user) &&
+                        conversationHistory.Message.Contains("예외"))
+                    {
+                        exceptions.Add(conversationHistory);
+                        break;
+                    }
+                }
+            }
+            return exceptions;
         }
 
         public IEnumerable<ConversationHistory> GetWorkouts(

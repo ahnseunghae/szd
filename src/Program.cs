@@ -63,7 +63,7 @@ namespace szd
 
             foreach (var exceptionUser in exceptionUsers)
             {
-                Console.WriteLine($"{exceptionUser} 님은 이번 주 예외를 신청하였습니다.");
+                Console.WriteLine($"{exceptionUser} 님은 이번 주 예외를 신청하셨죠?");
             }
             Console.WriteLine();
 
@@ -91,6 +91,17 @@ namespace szd
             }
             Console.WriteLine();
 
+            Console.WriteLine("예외 신청 내역");
+            var exceptions = parser.GetExceptions(users, conversationHistories);
+            foreach (var exceptionRequest in exceptions)
+            {
+                Console.Write(exceptionRequest.Date + "    ");
+                Console.Write(exceptionRequest.User);
+                Console.Write(exceptionRequest.Message.PadLeft(35));
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("인증 기록");
             foreach (var user in users)
             {
                 var workouts = parser.GetWorkouts(user, conversationHistories);
