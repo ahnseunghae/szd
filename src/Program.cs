@@ -43,6 +43,8 @@ namespace szd
             var users = parser.GetUsers(conversationHistories);
             // Finds exception users.
             var exceptionUsers = parser.GetExceptionUsers(users, conversationHistories);
+            // Finds unreasonable exception user.
+            var whyExceptionUsers = parser.GetWhyExceptionUsers(users, conversationHistories);
 
             var workoutUsers = new List<string>();
             // Finds workout done users.
@@ -57,8 +59,15 @@ namespace szd
 
             var participantCount = exceptionUsers.ToList().Concat(workoutUsers).Distinct().Count();
             System.Console.WriteLine($"{participantCount}명이 인증 참여, 예외 신청을 하였습니다.");
-            System.Console.WriteLine($"{workoutUsers.Count()}명이 인증에 참여해주셨습니다.");
+            System.Console.WriteLine($"{workoutUsers.Count()}명이 인증에 참여해주셨습니다 ୧('ധ')୨");
             System.Console.WriteLine($"{exceptionUsers.Count()}명이 예외 신청을 하였습니다.");
+            Console.WriteLine();
+
+
+            foreach (var whyExceptionUser in whyExceptionUsers)
+            {
+                Console.WriteLine($"{whyExceptionUser} 님은 4회를 채울꺼면 왜 예외 신청하신거죠?");
+            }
             Console.WriteLine();
 
             foreach (var exceptionUser in exceptionUsers)
@@ -100,6 +109,7 @@ namespace szd
                 Console.Write(exceptionRequest.Message.PadLeft(35));
                 Console.WriteLine();
             }
+            Console.WriteLine();
 
             Console.WriteLine("인증 기록");
             foreach (var user in users)

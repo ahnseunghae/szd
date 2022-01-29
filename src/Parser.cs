@@ -29,6 +29,27 @@ namespace szd
             return exceptionUsers;
         }
 
+        public IEnumerable<string> GetWhyExceptionUsers(
+            IEnumerable<string> users,
+            IEnumerable<ConversationHistory> conversationHistories)
+        {
+            var exceptionUsers = new List<string>();
+
+            foreach (var user in users)
+            {
+                foreach (var conversationHistory in conversationHistories)
+                {
+                    if (conversationHistory.Message.Contains(user) &&
+                        conversationHistory.Message.Contains("4/예외"))
+                    {
+                        exceptionUsers.Add(user);
+                        break;
+                    }
+                }
+            }
+            return exceptionUsers;
+        }
+
         public IEnumerable<ConversationHistory> GetExceptions(
             IEnumerable<string> users,
             IEnumerable<ConversationHistory> conversationHistories)
