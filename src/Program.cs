@@ -66,7 +66,7 @@ namespace szd
 
             foreach (var whyExceptionUser in whyExceptionUsers)
             {
-                Console.WriteLine($"{whyExceptionUser} 님은 4회를 채울꺼면 왜 예외 신청하신거죠?");
+                Console.WriteLine($"{whyExceptionUser} 님은 예외 후 4회를 완료하셨네요?");
             }
             Console.WriteLine();
 

@@ -18,7 +18,7 @@ namespace szd
                 foreach (var conversationHistory in conversationHistories)
                 {
                     if (conversationHistory.Message.Contains(user) &&
-                        conversationHistory.Message.Contains("예외"))
+                        conversationHistory.Message.Contains(" 예외"))
                     {
                         exceptionUsers.Add(user);
                         break;
@@ -61,7 +61,7 @@ namespace szd
                 foreach (var user in users)
                 {
                     if (conversationHistory.Message.Contains(user) &&
-                        conversationHistory.Message.Contains("예외"))
+                        conversationHistory.Message.Contains(" 예외"))
                     {
                         exceptions.Add(conversationHistory);
                         break;
