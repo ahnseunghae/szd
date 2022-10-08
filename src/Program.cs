@@ -19,10 +19,10 @@ namespace szd
             var conversationHistories = csv.GetRecords<ConversationHistory>().ToList();
 
             // Last week.
-            // var startTime = DateTime.UtcNow.AddHours(9).AddDays(-7).StartOfWeek(DayOfWeek.Sunday);
+            var startTime = DateTime.UtcNow.AddHours(9).AddDays(-7).StartOfWeek(DayOfWeek.Sunday);
 
             // This week.
-            var startTime = DateTime.UtcNow.AddHours(9).StartOfWeek(DayOfWeek.Sunday);
+            // var startTime = DateTime.UtcNow.AddHours(9).StartOfWeek(DayOfWeek.Sunday);
             var endTime = startTime.AddDays(7).AddSeconds(-1);
 
             Console.WriteLine("시작일: " + startTime.Date.ToString("yyyy/MM/dd"));
@@ -45,6 +45,8 @@ namespace szd
             var exceptionUsers = parser.GetExceptionUsers(users, conversationHistories);
             // Finds unreasonable exception user.
             var whyExceptionUsers = parser.GetWhyExceptionUsers(users, conversationHistories);
+            // Finds users that already pay tax.
+            var alreadyPayTaxUsers = parser.GetAlreadyPayTaxUsers(conversationHistories);
 
             var workoutUsers = new List<string>();
             // Finds workout done users.
@@ -61,12 +63,10 @@ namespace szd
             System.Console.WriteLine($"{participantCount}명이 인증 참여, 예외 신청을 하였습니다.");
             System.Console.WriteLine($"{workoutUsers.Count()}명이 인증에 참여해주셨습니다 ୧('ധ')୨");
             System.Console.WriteLine($"{exceptionUsers.Count()}명이 예외 신청을 하였습니다.");
-            Console.WriteLine();
-
 
             foreach (var whyExceptionUser in whyExceptionUsers)
             {
-                Console.WriteLine($"{whyExceptionUser} 님은 예외 후 4회를 완료하셨네요?");
+                Console.WriteLine($"{whyExceptionUser} 님은 예외를 하였지마는 예외를 아니하였습니다.");
             }
             Console.WriteLine();
 
@@ -97,6 +97,12 @@ namespace szd
                 {
                     Console.WriteLine(user + " 님은 주 4회 이상 인증을 하셨나요?");
                 }
+            }
+            Console.WriteLine();
+
+            foreach (var user in alreadyPayTaxUsers)
+            {
+                Console.WriteLine($"{user} 님께 성실납세자표창 드립니다.");
             }
             Console.WriteLine();
 

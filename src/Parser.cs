@@ -71,6 +71,21 @@ namespace szd
             return exceptions;
         }
 
+        public IEnumerable<string> GetAlreadyPayTaxUsers(IEnumerable<ConversationHistory> conversationHistories)
+        {
+            var users = new List<string>();
+
+            foreach (var conversationHistory in conversationHistories)
+            {
+                if (conversationHistory.Message.Contains("랜덤 선물 메시지를 보냈습니다."))
+                {
+                    users.Add(conversationHistory.User);
+                }
+            }
+
+            return users.Distinct();
+        }
+
         public IEnumerable<ConversationHistory> GetWorkouts(
             string user,
             IEnumerable<ConversationHistory> conversationHistories)
