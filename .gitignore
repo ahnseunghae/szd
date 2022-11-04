@@ -367,3 +367,4 @@ obj/
 *.csv
 *.txt
 .DS_Store
+.idea/
