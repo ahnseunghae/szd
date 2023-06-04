@@ -77,7 +77,7 @@ namespace szd
 
             foreach (var conversationHistory in conversationHistories)
             {
-                if (conversationHistory.Message.Contains("랜덤 선물 메시지를 보냈습니다."))
+                if (conversationHistory.Message.Contains("랜덤 선물 메시지를 보냈습니다.") && conversationHistory.Date.DayOfWeek == System.DayOfWeek.Saturday)
                 {
                     users.Add(conversationHistory.User);
                 }
